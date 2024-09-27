@@ -25,6 +25,7 @@ pub enum Architecture {
     Hexagon,
     X86_32(X86_32Architecture),
     M68k,
+    LoongArch64,
     Mips32(Mips32Architecture),
     Mips64(Mips64Architecture),
     Msp430,
@@ -573,6 +574,7 @@ impl Architecture {
             | E2k(_)
             | Hexagon
             | X86_32(_)
+            | LoongArch64
             | Mips64(Mips64Architecture::Mips64el)
             | Mips32(Mips32Architecture::Mipsel)
             | Mips32(Mips32Architecture::Mipsisa32r6el)
@@ -636,6 +638,7 @@ impl Architecture {
             | S390x
             | Sparc64
             | Sparcv9
+            | LoongArch64
             | Wasm64
             | Clever(_) => Ok(PointerWidth::U64),
         }
@@ -854,6 +857,7 @@ impl fmt::Display for Architecture {
             E2k(e2k) => e2k.fmt(f),
             Hexagon => f.write_str("hexagon"),
             X86_32(x86_32) => x86_32.fmt(f),
+            LoongArch64 => f.write_str("loongarch64"),
             M68k => f.write_str("m68k"),
             Mips32(mips32) => mips32.fmt(f),
             Mips64(mips64) => mips64.fmt(f),
@@ -1077,6 +1081,7 @@ impl FromStr for Architecture {
             "bpfeb" => Bpfeb,
             "bpfel" => Bpfel,
             "hexagon" => Hexagon,
+            "loongarch64" => LoongArch64,
             "m68k" => M68k,
             "msp430" => Msp430,
             "nvptx64" => Nvptx64,
@@ -1575,6 +1580,7 @@ mod tests {
             "i686-uwp-windows-gnu",
             "i686-uwp-windows-msvc",
             "i686-wrs-vxworks",
+            "loongarch64-unknown-linux-gnu",
             "m68k-unknown-linux-gnu",
             "mips64el-unknown-linux-gnuabi64",
             "mips64el-unknown-linux-muslabi64",
