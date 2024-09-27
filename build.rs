@@ -94,6 +94,8 @@ fn write_host_rs(mut out: File, triple: Triple) -> io::Result<()> {
     writeln!(out, "#[allow(unused_imports)]")?;
     writeln!(out, "use crate::CustomVendor;")?;
     writeln!(out, "#[allow(unused_imports)]")?;
+    writeln!(out, "use crate::E2kArchitecture::*;")?;
+    writeln!(out, "#[allow(unused_imports)]")?;
     writeln!(out, "use crate::Mips32Architecture::*;")?;
     writeln!(out, "#[allow(unused_imports)]")?;
     writeln!(out, "use crate::Mips64Architecture::*;")?;

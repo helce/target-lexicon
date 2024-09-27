@@ -21,6 +21,7 @@ pub enum Architecture {
     Avr,
     Bpfeb,
     Bpfel,
+    E2k(E2kArchitecture),
     Hexagon,
     X86_32(X86_32Architecture),
     M68k,
@@ -364,6 +365,27 @@ pub enum Mips64Architecture {
     Mipsisa64r6el,
 }
 
+/// An enum for all Elbrus architectures.
+#[cfg_attr(feature = "rust_1_40", non_exhaustive)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+#[allow(missing_docs)]
+pub enum E2kArchitecture {
+    E2k,
+    E2k12c,
+    E2k16c,
+    E2k1cplus,
+    E2k2c3,
+    E2k48c,
+    E2k4c,
+    E2k8c,
+    E2k8c2,
+    E2kv3,
+    E2kv4,
+    E2kv5,
+    E2kv6,
+    E2kv7,
+}
+
 /// A string for a `Vendor::Custom` that can either be used in `const`
 /// contexts or hold dynamic strings.
 #[derive(Clone, Debug, Eq)]
@@ -536,6 +558,7 @@ impl Architecture {
             | Asmjs
             | Avr
             | Bpfel
+            | E2k(_)
             | Hexagon
             | X86_32(_)
             | Mips64(Mips64Architecture::Mips64el)
@@ -589,6 +612,7 @@ impl Architecture {
             AmdGcn
             | Bpfeb
             | Bpfel
+            | E2k(_)
             | Powerpc64le
             | Riscv64(_)
             | X86_64
@@ -757,6 +781,30 @@ impl fmt::Display for Mips64Architecture {
     }
 }
 
+impl fmt::Display for E2kArchitecture {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        use E2kArchitecture::*;
+
+        let s = match *self {
+            E2k => "e2k",
+            E2k12c => "e2k12c",
+            E2k16c => "e2k16c",
+            E2k1cplus => "e2k1cplus",
+            E2k2c3 => "e2k2c3",
+            E2k48c => "e2k48c",
+            E2k4c => "e2k4c",
+            E2k8c => "e2k8c",
+            E2k8c2 => "e2k8c2",
+            E2kv3 => "e2kv3",
+            E2kv4 => "e2kv4",
+            E2kv5 => "e2kv5",
+            E2kv6 => "e2kv6",
+            E2kv7 => "e2kv7",
+        };
+        f.write_str(s)
+    }
+}
+
 impl fmt::Display for Architecture {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         use Architecture::*;
@@ -770,6 +818,7 @@ impl fmt::Display for Architecture {
             Avr => f.write_str("avr"),
             Bpfeb => f.write_str("bpfeb"),
             Bpfel => f.write_str("bpfel"),
+            E2k(e2k) => e2k.fmt(f),
             Hexagon => f.write_str("hexagon"),
             X86_32(x86_32) => x86_32.fmt(f),
             M68k => f.write_str("m68k"),
@@ -943,6 +992,32 @@ impl FromStr for Mips64Architecture {
     }
 }
 
+impl FromStr for E2kArchitecture {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, ()> {
+        use E2kArchitecture::*;
+
+        Ok(match s {
+            "e2k" => E2k,
+            "e2k12c" => E2k12c,
+            "e2k16c" => E2k16c,
+            "e2k1cplus" => E2k1cplus,
+            "e2k2c3" => E2k2c3,
+            "e2k48c" => E2k48c,
+            "e2k4c" => E2k4c,
+            "e2k8c" => E2k8c,
+            "e2k8c2" => E2k8c2,
+            "e2kv3" => E2kv3,
+            "e2kv4" => E2kv4,
+            "e2kv5" => E2kv5,
+            "e2kv6" => E2kv6,
+            "e2kv7" => E2kv7,
+            _ => return Err(()),
+        })
+    }
+}
+
 impl FromStr for Architecture {
     type Err = ();
 
@@ -986,6 +1061,8 @@ impl FromStr for Architecture {
                     Mips32(mips32)
                 } else if let Ok(mips64) = Mips64Architecture::from_str(s) {
                     Mips64(mips64)
+                } else if let Ok(e2k) = E2kArchitecture::from_str(s) {
+                    E2k(e2k)
                 } else {
                     return Err(());
                 }
@@ -1409,6 +1486,20 @@ mod tests {
             "avr-unknown-unknown",
             "bpfeb-unknown-none",
             "bpfel-unknown-none",
+            "e2k-unknown-linux-gnu",
+            "e2k12c-unknown-linux-gnu",
+            "e2k16c-unknown-linux-gnu",
+            "e2k1cplus-unknown-linux-gnu",
+            "e2k2c3-unknown-linux-gnu",
+            "e2k48c-unknown-linux-gnu",
+            "e2k4c-unknown-linux-gnu",
+            "e2k8c-unknown-linux-gnu",
+            "e2k8c2-unknown-linux-gnu",
+            "e2kv3-unknown-linux-gnu",
+            "e2kv4-unknown-linux-gnu",
+            "e2kv5-unknown-linux-gnu",
+            "e2kv6-unknown-linux-gnu",
+            "e2kv7-unknown-linux-gnu",
             "hexagon-unknown-linux-musl",
             "i386-apple-ios",
             "i586-pc-windows-msvc",
