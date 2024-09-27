@@ -356,6 +356,9 @@ impl Aarch64Architecture {
     // }
 
     /// Return the pointer bit width of this target's architecture.
+    ///
+    /// This function is only aware of the CPU architecture so it is not aware
+    /// of ilp32 ABIs.
     pub fn pointer_width(self) -> PointerWidth {
         match self {
             Aarch64Architecture::Aarch64 | Aarch64Architecture::Aarch64be => PointerWidth::U64,
@@ -915,6 +918,9 @@ impl Architecture {
     }
 
     /// Return the pointer bit width of this target's architecture.
+    ///
+    /// This function is only aware of the CPU architecture so it is not aware
+    /// of ilp32 and x32 ABIs.
     #[rustfmt::skip]
     pub fn pointer_width(self) -> Result<PointerWidth, ()> {
         use Architecture::*;
