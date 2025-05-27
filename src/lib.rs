@@ -34,8 +34,8 @@ pub use self::host::HOST;
 pub use self::parse_error::ParseError;
 pub use self::targets::{
     Aarch64Architecture, Architecture, ArmArchitecture, BinaryFormat, CustomVendor,
-    E2kArchitecture, Environment, Mips32Architecture, Mips64Architecture, OperatingSystem,
-    Riscv32Architecture, Riscv64Architecture, Vendor, X86_32Architecture,
+    DeploymentTarget, E2kArchitecture, Environment, Mips32Architecture, Mips64Architecture,
+    OperatingSystem, Riscv32Architecture, Riscv64Architecture, Vendor, X86_32Architecture,
 };
 pub use self::triple::{CallingConvention, Endianness, PointerWidth, Triple};
 
